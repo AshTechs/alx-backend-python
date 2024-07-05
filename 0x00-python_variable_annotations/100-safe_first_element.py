@@ -5,6 +5,7 @@ Module for safely retrieving the first element from a list.
 
 from typing import Sequence, Any, Union
 
+
 def safe_first_element(lst: Sequence[Any]) -> Union[Any, None]:
     """
     Safely retrieves the first element from a list.
