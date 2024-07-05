@@ -3,17 +3,14 @@
 Module for safely retrieving the first element from a list.
 """
 
-from typing import Sequence, TypeVar, Union
+from typing import Sequence, Any, Union
 
-T = TypeVar('T')
-
-
-def safe_first_element(lst: Sequence[T]) -> Union[T, None]:
+def safe_first_element(lst: Sequence[Any]) -> Union[Any, None]:
     """
     Safely retrieves the first element from a list.
 
     Args:
-        lst (Sequence[T]): The input list.
+        lst (Sequence[Any]): The input list.
 
     Returns:
         Union: The first element of the list, or None if the list is empty.
