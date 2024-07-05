@@ -1,20 +1,16 @@
 #!/usr/bin/env python3
-"""
-Module for zooming in on an array by repeating each element multiple times.
-"""
 
 from typing import Tuple, Any
 
 
 def zoom_array(lst: Tuple[Any, ...], factor: int = 2) -> Tuple[Any, ...]:
-    """
-    Zooms in on an array by repeating each element multiple times.
+    zoomed_in = tuple(item for item in lst for _ in range(factor))
+    return zoomed_in
 
-    Args:
-        lst (Tuple[Any, ...]): The tuple of elements to zoom in on.
-        factor: The factor by which each element should be repeated.
+array = (12, 72, 91)
 
-    Returns:
-        Tuple: Zoomed-in tuple with elements repeated according to the factor.
-    """
-    return tuple(item for item in lst for _ in range(factor))
+zoom_2x = zoom_array(array)
+zoom_3x = zoom_array(array, 3)
+
+print(zoom_2x)
+print(zoom_3x)
