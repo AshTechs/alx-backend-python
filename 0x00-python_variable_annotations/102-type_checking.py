@@ -15,7 +15,7 @@ def zoom_array(lst: Tuple[Any, ...], factor: int = 2) -> Tuple[Any, ...]:
         factor: The factor by which each element should be repeated.
 
     Returns:
-        Tuple: The zoomed-in tuple with elements repeated according to factor.
+        Tuple: Zoomed-in tuple with elements repeated according to the factor.
     """
     zoomed_in = []
     for item in lst:
