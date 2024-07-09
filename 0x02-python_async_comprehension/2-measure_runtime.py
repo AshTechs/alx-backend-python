@@ -6,6 +6,7 @@ Module for measuring runtime of async comprehensions.
 import asyncio
 from typing import List
 from time import perf_counter
+from typing import Coroutine
 from 1_async_comprehension import async_comprehension
 
 
