@@ -18,12 +18,9 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
         max_delay (int): The maximum number of seconds to wait for each delay.
 
     Returns:
-        List[float]: A list of all the delays (float values) in ascending order
+        List[float]: A list of all the delays (float values) in ascending order.
     """
-    async def run_task(max_delay: int) -> float:
-        return await wait_random(max_delay)
-
-    tasks = [run_task(max_delay) for _ in range(n)]
+    tasks = [wait_random(max_delay) for _ in range(n)]
     delays = await asyncio.gather(*tasks)
 
     sorted_delays = []
