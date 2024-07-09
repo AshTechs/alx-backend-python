@@ -7,6 +7,7 @@ import asyncio
 from typing import List
 from random import uniform
 
+
 async def async_generator() -> float:
     """
     Asynchronous generator that yields random numbers.
@@ -14,6 +15,7 @@ async def async_generator() -> float:
     for _ in range(10):
         await asyncio.sleep(1)
         yield uniform(0, 10)
+
 
 async def async_comprehension() -> List[float]:
     """
