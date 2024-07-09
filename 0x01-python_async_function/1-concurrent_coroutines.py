@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This contains an async coroutine `wait_n` that spawns `wait_random` n times
+This contains asynchronous coroutine `wait_n` that spawns `wait_random` n times
 with a specified max_delay and returns the list of delays in ascending order.
 """
 
