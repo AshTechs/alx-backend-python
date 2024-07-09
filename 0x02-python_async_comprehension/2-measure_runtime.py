@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Module to measure the runtime of async_comprehension executed in parallel.
+Measure the total runtime of executing async_comprehension in parallel.
 """
 
 import asyncio
 from typing import List
 from time import time
-from 1-async_comprehension import async_comprehension
+
+
 
 async def measure_runtime() -> float:
     """
