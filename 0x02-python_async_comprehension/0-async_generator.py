@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
 """
-This module contains an asynchronous generator that yields a random number
-between 0 and 10 after waiting for 1 second, looping 10 times.
+Module for asynchronous generator exercise.
 """
 
 import asyncio
-import random
-from typing import AsyncGenerator
+from typing import Generator
+from random import uniform
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def async_generator() -> Generator[float, None, None]:
     """
-    Asynchronously generates a random number between 0 and 10 every second,
-    yielding the result, for a total of 10 times.
+    Asynchronous generator that yields random numbers.
 
     Yields:
-        float: A random number between 0 and 10.
+        float: A random float number.
     """
     for _ in range(10):
         await asyncio.sleep(1)
-        yield random.uniform(0, 10)
+        yield uniform(0, 10)
