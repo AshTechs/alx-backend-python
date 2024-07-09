@@ -1,35 +1,16 @@
 #!/usr/bin/env python3
+"""Asynchronous Python
 """
-Measure the total runtime of executing async_comprehension in parallel.
-"""
-
-import asyncio
-from typing import List
 from time import time
+import asyncio
 
+
+async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
 async def measure_runtime() -> float:
+    """ Checks execution time
     """
-    Measures the total runtime of executing async_comprehension in parallel.
-
-    Returns:
-        float: Total runtime in seconds.
-    """
-    start_time = time()
-
-    await asyncio.gather(
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension()
-    )
-
-    end_time = time()
-    total_runtime = end_time - start_time
-    return total_runtime
-
-
-if __name__ == "__main__":
-    total_runtime = asyncio.run(measure_runtime())
-    print(f"Total runtime: {total_runtime:.2f} seconds")
+    start = time()
+    await asyncio.gather(*(async_comprehension() for _ in range(4)))
+    return time() - start
