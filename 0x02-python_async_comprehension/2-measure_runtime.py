@@ -6,6 +6,7 @@ Module to measure the runtime of async_comprehension executed in parallel.
 import asyncio
 from typing import List
 from time import time
+from 1_async_comprehension import async_comprehension
 
 
 async def measure_runtime() -> float:
@@ -15,7 +16,7 @@ async def measure_runtime() -> float:
     Returns:
         float: Total runtime in seconds.
     """
-    start_time = time()
+    start_time: float = time()
 
     await asyncio.gather(
         async_comprehension(),
@@ -24,11 +25,11 @@ async def measure_runtime() -> float:
         async_comprehension()
     )
 
-    end_time = time()
-    total_runtime = end_time - start_time
+    end_time: float = time()
+    total_runtime: float = end_time - start_time
     return total_runtime
 
 
 if __name__ == "__main__":
-    total_runtime = asyncio.run(measure_runtime())
+    total_runtime: float = asyncio.run(measure_runtime())
     print(f"Total runtime: {total_runtime:.2f} seconds")
