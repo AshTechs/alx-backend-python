@@ -1,41 +1,40 @@
 #!/usr/bin/env python3
 """
-Unit tests for get_json function.
+Unit tests for memoize decorator.
 """
 
 import unittest
-from unittest.mock import patch, Mock
-from parameterized import parameterized
-from utils import get_json
+from unittest.mock import patch
+from utils import memoize
 
 
-class TestGetJson(unittest.TestCase):
+class TestMemoize(unittest.TestCase):
     """
-    Unit tests for get_json function.
+    Unit tests for memoize decorator.
     """
 
-    @parameterized.expand([
-        ("http://example.com", {"payload": True}),
-        ("http://holberton.io", {"payload": False})
-    ])
-    @patch('utils.requests.get')
-    def test_get_json(self, test_url, test_payload, mock_get):
-        """
-        Test get_json function with various inputs.
-        
-        Parameters:
-        test_url (str): The URL to fetch JSON data from.
-        test_payload (dict): The expected JSON data.
-        mock_get (Mock): The mocked requests.get function.
-        """
-        mock_response = Mock()
-        mock_response.json.return_value = test_payload
-        mock_get.return_value = mock_response
+    class TestClass:
+        def a_method(self):
+            return 42
 
-        result = get_json(test_url)
+        @memoize
+        def a_property(self):
+            return self.a_method()
 
-        mock_get.assert_called_once_with(test_url)
-        self.assertEqual(result, test_payload)
+    @patch.object(TestClass, 'a_method', return_value=42)
+    def test_memoize(self, mock_a_method):
+        """
+        Test that a_property calls a_method once and caches the result.
+        """
+        test_instance = self.TestClass()
+
+        result1 = test_instance.a_property()
+        result2 = test_instance.a_property()
+
+        self.assertEqual(result1, 42)
+        self.assertEqual(result2, 42)
+
+        mock_a_method.assert_called_once()
 
 
 if __name__ == '__main__':
