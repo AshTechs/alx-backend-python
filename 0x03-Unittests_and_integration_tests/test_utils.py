@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Unit tests for the memoize decorator to verify caching behavior.
+Unit tests for the memoize decorator to ensure caching functionality.
 """
 
 import unittest
@@ -10,27 +10,27 @@ from utils import memoize
 
 class TestMemoize(unittest.TestCase):
     """
-    Unit tests for the memoize decorator.
+    Unit tests for the memoize decorator to validate caching behavior.
     """
 
     class TestClass:
         """
-        TestClass is used to demonstrate memoization with the memoize decorator.
+        A class to demonstrate the use of memoization with the memoize decorator.
         """
 
         def a_method(self):
             """
-            A simple method that returns a constant value.
+            A method that returns a constant integer value.
 
             Returns:
-            int: A constant value of 42.
+            int: The constant value 42.
             """
             return 42
 
         @memoize
         def a_property(self):
             """
-            A property method decorated with memoize.
+            A method decorated with memoize that calls a_method.
 
             Returns:
             int: The result of calling a_method.
@@ -55,7 +55,7 @@ class TestMemoize(unittest.TestCase):
         self.assertEqual(result1, 42)
         self.assertEqual(result2, 42)
 
-        # Check that a_method was called only once
+        # Ensure a_method was called only once
         mock_a_method.assert_called_once()
 
 
