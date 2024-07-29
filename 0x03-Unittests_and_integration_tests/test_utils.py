@@ -6,6 +6,7 @@ This module contains a test case for the memoize decorator.
 import unittest
 from unittest.mock import patch
 
+
 def memoize(func):
     """
     Memoize decorator to cache the result of a method call.
@@ -18,6 +19,7 @@ def memoize(func):
         return cache[args]
 
     return memoized_func
+
 
 class TestClass:
     """
@@ -37,6 +39,7 @@ class TestClass:
         """
         return self.a_method()
 
+
 class TestMemoize(unittest.TestCase):
     """
     Test case for the memoize decorator.
@@ -45,12 +48,13 @@ class TestMemoize(unittest.TestCase):
     @patch.object(TestClass, 'a_method', return_value=42)
     def test_memoize(self, mock_a_method):
         """
-        Test that a_property returns the correct result and a_method is called only once.
+        Test that a_property returns the correct result and a_method is called
         """
         test_instance = TestClass()
         self.assertEqual(test_instance.a_property(), 42)
         self.assertEqual(test_instance.a_property(), 42)
         mock_a_method.assert_called_once()
+
 
 if __name__ == '__main__':
     unittest.main()
