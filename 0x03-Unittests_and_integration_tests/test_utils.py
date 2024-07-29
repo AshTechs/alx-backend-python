@@ -27,15 +27,12 @@ class TestMemoize(unittest.TestCase):
             """
             return self.a_method()
 
-    @patch.object(TestClass, 'a_method')
+    @patch.object(TestClass, 'a_method', return_value=42)
     def test_memoize(self, mock_a_method):
         """
         Test that a_property calls a_method once and caches the result.
         """
         test_instance = self.TestClass()
-
-        # Setup the mock to return 42
-        mock_a_method.return_value = 42
 
         # Call a_property twice
         result1 = test_instance.a_property()
