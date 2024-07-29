@@ -15,10 +15,16 @@ class TestMemoize(unittest.TestCase):
 
     class TestClass:
         def a_method(self):
+            """
+            A simple method that returns a constant value.
+            """
             return 42
 
         @memoize
         def a_property(self):
+            """
+            A property that calls a_method, decorated with memoize.
+            """
             return self.a_method()
 
     @patch.object(TestClass, 'a_method', return_value=42)
@@ -28,12 +34,15 @@ class TestMemoize(unittest.TestCase):
         """
         test_instance = self.TestClass()
 
+        # Call a_property twice
         result1 = test_instance.a_property()
         result2 = test_instance.a_property()
 
+        # Check that the result is correct
         self.assertEqual(result1, 42)
         self.assertEqual(result2, 42)
 
+        # Check that a_method was called only once
         mock_a_method.assert_called_once()
 
 
