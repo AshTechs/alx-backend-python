@@ -1,49 +1,41 @@
 #!/usr/bin/env python3
 """
-Unit tests for access_nested_map function.
+Unit tests for get_json function.
 """
 
 import unittest
+from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map
+from utils import get_json
 
 
-class TestAccessNestedMap(unittest.TestCase):
+class TestGetJson(unittest.TestCase):
     """
-    Unit tests for access_nested_map function.
+    Unit tests for get_json function.
     """
 
     @parameterized.expand([
-        ({"a": 1}, ("a",), 1),
-        ({"a": {"b": 2}}, ("a",), {"b": 2}),
-        ({"a": {"b": 2}}, ("a", "b"), 2)
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False})
     ])
-    def test_access_nested_map(self, nested_map, path, expected):
+    @patch('utils.requests.get')
+    def test_get_json(self, test_url, test_payload, mock_get):
         """
-        Test access_nested_map function with various inputs.
+        Test get_json function with various inputs.
         
         Parameters:
-        nested_map (Mapping): A dictionary-like object containing nested maps.
-        path (Tuple): A tuple of keys representing the path to follow in the nested map.
-        expected (Any): The expected result at the end of the path in the nested map.
+        test_url (str): The URL to fetch JSON data from.
+        test_payload (dict): The expected JSON data.
+        mock_get (Mock): The mocked requests.get function.
         """
-        self.assertEqual(access_nested_map(nested_map, path), expected)
+        mock_response = Mock()
+        mock_response.json.return_value = test_payload
+        mock_get.return_value = mock_response
 
-    @parameterized.expand([
-        ({}, ("a",)),
-        ({"a": 1}, ("a", "b"))
-    ])
-    def test_access_nested_map_exception(self, nested_map, path):
-        """
-        Test access_nested_map function to ensure KeyError is raised for invalid paths.
-        
-        Parameters:
-        nested_map (Mapping): A dictionary-like object containing nested maps.
-        path (Tuple): A tuple of keys representing the path to follow in the nested map.
-        """
-        with self.assertRaises(KeyError) as cm:
-            access_nested_map(nested_map, path)
-        self.assertEqual(str(cm.exception), f"'{path[-1]}'")
+        result = get_json(test_url)
+
+        mock_get.assert_called_once_with(test_url)
+        self.assertEqual(result, test_payload)
 
 
 if __name__ == '__main__':
