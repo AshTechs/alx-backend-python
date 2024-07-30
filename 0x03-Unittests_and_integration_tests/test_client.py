@@ -60,7 +60,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     def test_public_repos(self):
         """
-        Test public_repos method to ensure it returns the correct list of repo
+        Test public_repos method to ensure it returns the correct list of repos.
         """
         client = GithubOrgClient("google")
         self.assertEqual(client.public_repos(), self.expected_repos)
