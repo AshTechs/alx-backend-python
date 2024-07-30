@@ -1,85 +1,68 @@
 #!/usr/bin/env python3
-"""
-This module contains a test case for the memoize decorator.
-"""
-
+""" Parameterize a unit test, Mock HTTP calls, Parameterize and patch """
 import unittest
 from unittest.mock import patch
-from typing import Callable, Any, Dict, Tuple
+from parameterized import parameterized
+from utils import access_nested_map, get_json, memoize
 
 
-def memoize(func: Callable) -> Callable:
-    """
-    Memoize decorator to cache the result of a method call.
+class TestAccessNestedMap(unittest.TestCase):
+    """ TESTCASE """
+    """ to test the function for following inputs """
+    @parameterized.expand([
+        ({"a": 1}, ("a",), 1),
+        ({"a": {"b": 2}}, ("a",), {"b": 2}),
+        ({"a": {"b": 2}}, ("a", "b"), 2),
+    ])
+    def test_access_nested_map(self, nested_map, path, answer):
+        """ method to test that the method returns what it is supposed to """
+        self.assertEqual(access_nested_map(nested_map, path), answer)
 
-    Args:
-        func (Callable): The function to memoize.
-
-    Returns:
-        Callable: The memoized function.
-    """
-    cache: Dict[Tuple[Any, ...], Any] = {}
-
-    def memoized_func(*args: Any) -> Any:
-        """
-        The memoized function.
-
-        Args:
-            *args (Any): Arguments to the function.
-
-        Returns:
-            Any: The cached result of the function call.
-        """
-        if args not in cache:
-            cache[args] = func(*args)
-        return cache[args]
-
-    return memoized_func
+    """  to test that a KeyError is raised for the following inputs """
+    @parameterized.expand([
+        ({}, ("a",)),
+        ({"a": 1}, ("a", "b")),
+    ])
+    def test_access_nested_map_exception(self, nested_map, path):
+        """ method to test that a KeyError is raised properly """
+        with self.assertRaises(KeyError) as error:
+            access_nested_map(nested_map, path)
+        self.assertEqual(error.exception.args[0], path[-1])
 
 
-class TestClass:
-    """
-    A test class to demonstrate the memoize decorator.
-    """
-
-    def a_method(self) -> int:
-        """
-        Returns a constant value.
-
-        Returns:
-            int: The constant value 42.
-        """
-        return 42
-
-    @memoize
-    def a_property(self) -> int:
-        """
-        Returns the result of a_method, memoized.
-
-        Returns:
-            int: The result of a_method, which is memoized.
-        """
-        return self.a_method()
+class TestGetJson(unittest.TestCase):
+    """ TESTCASE """
+    """ to test the function for following inputs """
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False}),
+    ])
+    @patch('test_utils.get_json')
+    def test_get_json(self, test_url, test_payload, mock_get):
+        """ method to test that utils.get_json returns the expected result """
+        mock_get.return_value = test_payload
+        result = get_json(test_url)
+        self.assertEqual(result, test_payload)
 
 
 class TestMemoize(unittest.TestCase):
-    """
-    Test case for the memoize decorator.
-    """
-
-    @patch.object(TestClass, 'a_method', return_value=42)
-    def test_memoize(self, mock_a_method: unittest.mock.Mock) -> None:
+    """ TESTCASE """
+    def test_memoize(self):
+        """ Test that when calling a_property twice, the correct result is
+            returned but a_method is only called once using assert_called_once
         """
-        Test a_property returns the correct result and a_method is called once.
+        class TestClass:
+            """ class """
+            def a_method(self):
+                """ method  """
+                return 42
 
-        Args:
-            mock_a_method (unittest.mock.Mock): Mock object for a_method.
-        """
-        test_instance = TestClass()
-        self.assertEqual(test_instance.a_property(), 42)
-        self.assertEqual(test_instance.a_property(), 42)
-        mock_a_method.assert_called_once()
-
-
-if __name__ == '__main__':
-    unittest.main()
+            @memoize
+            def a_property(self):
+                """ property """
+                return self.a_method()
+        with patch.object(TestClass, "a_method") as mockMethod:
+            test_class = TestClass()
+            test_class.a_property
+            test_class.a_property
+            mockMethod.assert_called_once
